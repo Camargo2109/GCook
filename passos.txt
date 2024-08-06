@@ -1,0 +1,8 @@
+//Configurar o Git Local:
+git config --global user.name "Arthur Camargo"
+git config --global user.email arthur.barrabonita@gmail.com
+
+
+dotnet new mvc -o GCook 
+
+cd GCook 
