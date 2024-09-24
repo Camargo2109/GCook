@@ -1,32 +1,84 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using GCook.ViewModels;
+using GCook.Services;
+using Microsoft.VisualBasic;
 
-namespace GCook.Controllers
+
+namespace GCook.Controllers;
+
+public class AccountController : Controller
 {
-    [Route("[controller]")]
-    public class AccountController : Controller
+    private readonly ILogger<AccountController> _logger;
+    private readonly IUsuarioService _usuarioService;
+
+    public AccountController(
+        ILogger<AccountController> logger,
+        IUsuarioService usuarioService
+    )
     {
-        private readonly ILogger<AccountController> _logger;
+        //Url.Action
+        _logger = logger;
+        _usuarioService = usuarioService;
+    }
 
-        public AccountController(ILogger<AccountController> logger)
+    [HttpGet]
+    public IActionResult Login(string returnUrl)
+    {
+        LoginVM login = new()
         {
-            _logger = logger;
-        }
+            UrlRetorno = returnUrl ?? Url.Content("^/")
+        };
+        return View(login);
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(LoginVM login)
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+    {
+        if (ModelState.IsValid)
         {
-            return View("Error!");
+            var result = await _usuarioService.LoginUsuario(login);
+            if (result.Succeeded)
+                return LocalRedirect(login.UrlRetorno);
+            if (result.IsLockedOut)
+                return RedirectToAction("Lockout");
+            if (result.IsNotAllowed)
+                ModelState.AddModelError(string.Empty, "Sua conta não está confirmada, verefique seu email!");
+            else 
+                ModelState.AddModelError(string.Empty, "Usuário e/ou Senha Inválidos!!!");
         }
+        return View(login);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _usuarioService.LogoffUsuario();
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult Registro()
+    {
+        RegistroVM register = new();
+        return View(register);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmarEmail(string UserId, string code)
+    {
+        if (UserId == null || code == null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        await _usuarioService.ConfirmarEmail(userId, code);
+        return View(true);
+    }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View ("Error!");
     }
 }
