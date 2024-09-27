@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Components;
 
 namespace GCook.Models;
 
@@ -13,19 +12,21 @@ public class Receita
     [Required]
     [StringLength(100)]
     public string Nome { get; set; }
-    
+
     [StringLength(1000)]
     public string Descricao { get; set; }
 
     [StringLength(30)]
     public string TempoPreparo { get; set; }
-    public int Rendimento { get; set; } = 1;
-    public  Dificuldade Dificuldade { get; set; }
-    
-    [StringLength(300)] 
+
+    public int Rendimento { get; set; }
+
+    public Dificuldade Dificuldade { get; set; }
+
+    [StringLength(300)]
     public string Foto { get; set; }
 
-    [Required] 
+    [Required]
     [StringLength(8000)]
     public string Preparo { get; set; }
 
@@ -33,6 +34,5 @@ public class Receita
     public int CategoriaId { get; set; }
     [ForeignKey("CategoriaId")]
     public Categoria Categoria { get; set; }
-    
     public ICollection<ReceitaIngrediente> Ingredientes { get; set; }
 }

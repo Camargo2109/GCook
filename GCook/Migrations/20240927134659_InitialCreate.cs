@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GCook.Migrations
 {
     /// <inheritdoc />
-    public partial class criarbanco : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -360,7 +360,7 @@ namespace GCook.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", 0, "eade34c4-759b-404c-a17e-2beb03cecd48", "admin@gcook.com", true, false, null, "ADMIN@GCOOK.COM", "ADMIN", "AQAAAAIAAYagAAAAEIa6rpXd44EOvLNbVT1jb6my+GXMMXdvwbQaksw32bfGMOFsM9mpm4GUpFtm6BWdWg==", null, false, "0cb653a3-b529-43b7-bcba-d9428de9c588", false, "Admin" });
+                values: new object[] { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", 0, "106bbd2a-ede9-4e1f-b87c-b746cbd4b9f5", "admin@gcook.com", true, false, null, "ADMIN@GCOOK.COM", "ADMIN", "AQAAAAIAAYagAAAAEDNFSz/2R0+kwtW6RCmotNVxkQcaRmE+9AMAMFHJPS7rz7ThDE4d1LcWrvND7+RmmA==", null, false, "49e5a18d-b31b-4274-9142-5238200637b0", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Categoria",
@@ -396,7 +396,8 @@ namespace GCook.Migrations
                     { 10, "Orégano" },
                     { 11, "Pão Sirio" },
                     { 12, "Cream Cheese" },
-                    { 13, "Cheddar" }
+                    { 13, "Cheddar" },
+                    { 14, "Azeite" }
                 });
 
             migrationBuilder.InsertData(
@@ -412,12 +413,12 @@ namespace GCook.Migrations
             migrationBuilder.InsertData(
                 table: "Receita",
                 columns: new[] { "Id", "CategoriaId", "Descricao", "Dificuldade", "Foto", "Nome", "Preparo", "Rendimento", "TempoPreparo" },
-                values: new object[] { 1, 4, "Prato perfeito para um lanche rápido ou mesmo uma refeição picante. Carne moída, pimentões, temperos e muito queijooooo", 1, "/img/receitas/1.jpg", "Carne Moída Mexicana", "", 3, "20 minutos" });
+                values: new object[] { 1, 4, "Prato perfeito para um lanche rápido ou mesmo uma refeição picante. Carne moída, pimentões, temperos e muito queijooooo", 1, "/img/receitas/1.jpg", "Carne Moída Mexicana", "Comece pela preparação dos ingredientes, pique os pimentões e a cebola em pequenos cubos, se preferir você também pode usar um processador de alimentos.Coloque a carne moída para fritar em uma panela com um pouco de azeite.Quando a carne moída já não estiver mais crua, adicione os pimentões e a cebola, mexendo bem para misturar todos os ingredientes.Aguarde alguns instante e adicione os temperos, mexendo novamente para misturar.Frite por mais alguns minutos a carne com os demais ingredientes.Adicione o Cream Cheese e o Queijo Cheddar, mexendo bem para evitar que queime o fundo e ajudar os queijos a derreterem.Quando os queijos já estiverem bem derretidos e misturados com os demais ingredientes, sirva acompanhado do Pão Sirio ou de Doritos.", 3, "20 minutos" });
 
             migrationBuilder.InsertData(
                 table: "Usuario",
                 columns: new[] { "UsuarioId", "DataNascimento", "Foto", "Nome" },
-                values: new object[] { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", new DateTime(2006, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "/img/usuarios/avatar.png", "Arthur Martins De Camargo" });
+                values: new object[] { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", new DateTime(2007, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "/img/usuarios/avatar.png", "Matheus Bertolini" });
 
             migrationBuilder.InsertData(
                 table: "ReceitaIngrediente",
@@ -435,7 +436,8 @@ namespace GCook.Migrations
                     { 10, 1, null, "1 colher sopa" },
                     { 11, 1, null, "A vontade" },
                     { 12, 1, null, "200g" },
-                    { 13, 1, null, "200g" }
+                    { 13, 1, null, "200g" },
+                    { 14, 1, null, "Um pouco" }
                 });
 
             migrationBuilder.CreateIndex(

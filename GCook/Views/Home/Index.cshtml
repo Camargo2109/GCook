@@ -7,25 +7,30 @@
     <div class="d-flex flex-column text-center text-white">
         <h1 class="display-4">GCook</h1>
         <hr>
-        <h5>Escolha sua Categoria</h5> 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 row-cols-lg-5 g-2 mt-2"></div>
+        <h5>Escolha sua Categoria</h5>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-2 mt-2">
             @foreach (var categoria in Model.Categorias)
             {
-                <button id="btn-cafe" class="btn btn-sm my-2 text-white btn-outline-secondary btn-filter">
-                    @categoria.Nome
-                </button>
+                <div class="col">
+                    <div class="bg-light rounded-2">
+                        <img src="@categoria.Foto" class="w-100 rounded-top-2" alt="@categoria.Nome">
+                        <h3 class="display-4 fs-6 text-dark py-2" >@categoria.Nome</h3>
+                    </div>
+                </div>
             }
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 mt-4">
+
         @foreach (var receita in Model.Receitas)
+
         {
             <!-- Card Receita - Inicio -->
             <div class="col">
                 <a asp-action="Receita" asp-route-id="@receita.Id" class="text-decoration-none">
                     <div class="card bg-dark border-white">
-                        <img src="@receita.Foto" class="card-img-top object-fit-cover;" alt="@receita.Nome" height="260" />
+                        <img src="@receita.Foto" class="card-img-top object-fit-cover" alt="@receita.Nome" height="260" />
                         <div class="card-body">
                             <h5 class="card-title text-white mb-3">@receita.Nome</h5>
                             <div class="d-flex justify-content-between">
@@ -38,26 +43,6 @@
             </div>
             <!-- Card Receita - Fim -->
         }
-
-
-        <!-- Card Receita - Inicio -->
-        <div class="col">
-            <a href="#" class="text-decoration-none">
-                <div class="card bg-dark border-white">
-                    <img src="img/receitas/1.jpg" class="card-img-top" alt="Nome" height="260"
-                        style="object-fit: cover;" />
-                    <div class="card-body">
-                        <h5 class="card-title text-white mb-3">Carne Moída Mexicana</h5>
-                        <div class="d-flex justify-content-between">
-                            <span class="text-white">Carnes</span>
-                            <span class="text-white">3 Ingredientes</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!-- Card Receita - Fim -->
-
 
         <div id="zeroData" class="col-lg-12 text-center" hidden>
             <h1 class="my-3 text-danger">Nenhuma Receita Encontrado</h1>

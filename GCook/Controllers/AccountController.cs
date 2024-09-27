@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
-using GCook.ViewModels;
 using GCook.Services;
-using Microsoft.VisualBasic;
-
+using GCook.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace GCook.Controllers;
 
@@ -16,7 +16,6 @@ public class AccountController : Controller
         IUsuarioService usuarioService
     )
     {
-        //Url.Action
         _logger = logger;
         _usuarioService = usuarioService;
     }
@@ -24,9 +23,8 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login(string returnUrl)
     {
-        LoginVM login = new()
-        {
-            UrlRetorno = returnUrl ?? Url.Content("^/")
+        LoginVM login = new(){
+            UrlRetorno = returnUrl ?? Url.Content("~/")
         };
         return View(login);
     }
@@ -34,18 +32,17 @@ public class AccountController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginVM login)
-
     {
-        if (ModelState.IsValid)
+        if(ModelState.IsValid)
         {
             var result = await _usuarioService.LoginUsuario(login);
-            if (result.Succeeded)
+            if(result.Succeeded)
                 return LocalRedirect(login.UrlRetorno);
-            if (result.IsLockedOut)
+            if(result.IsLockedOut)
                 return RedirectToAction("Lockout");
-            if (result.IsNotAllowed)
-                ModelState.AddModelError(string.Empty, "Sua conta não está confirmada, verefique seu email!");
-            else 
+            if(result.IsNotAllowed)
+                ModelState.AddModelError(string.Empty, "Sua conta não está cofirmada, verifique seu email!!");
+            else
                 ModelState.AddModelError(string.Empty, "Usuário e/ou Senha Inválidos!!!");
         }
         return View(login);
@@ -66,19 +63,38 @@ public class AccountController : Controller
         return View(register);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> ConfirmarEmail(string UserId, string code)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Registro(RegistroVM register)
     {
-        if (UserId == null || code == null)
+        register.Enviado = false;
+        if(ModelState.IsValid)
+        {
+            var result = await _usuarioService.RegistrarUsuario(register);
+            if(result != null)
+              foreach (var error in result)
+              {
+                 ModelState.AddModelError(string.Empty, error);
+              }
+            register.Enviado = result == null;
+        }
+        return View(register);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmarEmail(string userId, string code)
+    {
+        if (userId == null || code == null)
         {
             return RedirectToAction("Index", "Home");
         }
         await _usuarioService.ConfirmarEmail(userId, code);
         return View(true);
     }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View ("Error!");
+        return View("Error!");
     }
 }
